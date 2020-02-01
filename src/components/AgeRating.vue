@@ -1,7 +1,7 @@
 <template>
  <v-col cols="2">
       <v-overflow-btn
-          :items="dropdown_font"
+          :items="ageRatings"
           label="Возраст"
           target="#dropdown-example"
           style="margin-top: 14px;"
@@ -20,6 +20,11 @@ export default {
         { text: 'delete', callback: () => console.log('delete') },
       ],
     }),
+    computed: {
+      ageRatings(){
+            return this.$store.getters.ageRatings         
+        },
+    }
   }
 </script>
 

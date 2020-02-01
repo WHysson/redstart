@@ -2,7 +2,7 @@
 
   <v-row style="max-width: 500px;">
           <v-col align-self="center" cols="3">
-                <v-btn dark color="primary" text>Сегодня</v-btn>
+                <v-btn color="secondary" text>Сегодня</v-btn>
             </v-col>
             <v-col align-self="center" cols="3">
                 <v-btn text>Завтра</v-btn>
@@ -11,7 +11,7 @@
                 <v-col md="auto">
                      <v-menu
                     ref="menu"
-                    v-model="menu"
+                    v-model="searchTerm"
                     :close-on-content-click="false"
                     :return-value.sync="date"
                     transition="scale-transition"
@@ -44,9 +44,17 @@
 <script>
  export default {
     data: () => ({
-      date: null,
-      menu: false,
+        date: null,
+        searchTerm: null,
     }),
+     async mounted(){
+        this.$store.dispatch('fetchFilters')
+    },
+    computed:{
+       getDates(){
+         return this.$store.getters.dates
+       }, 
+    }
   }
 </script>
 

@@ -1,39 +1,6 @@
 <template>
 
- <v-container class="cont">
-
-     
-                <v-container>
-                     
-                    <v-row justify="center">
-                       <v-col cols="1">
-                           
-                       </v-col>
-                        <v-col cols="3">
-                            <v-overflow-btn
-                            class="my-2"
-                            :items="ageRatings"
-                            menu-props="bottom"
-                            label="Возраст"
-                            target="#dropdown-example-1"
-                            v-model="searchTerm"
-                            ></v-overflow-btn>
-                        </v-col>
-                            <v-divider vertical></v-divider>
-                        <v-col cols="3">
-                            <v-overflow-btn
-                            class="my-2"
-                            :items="genres"
-                            menu-props="bottom"
-                            label="Жанр"
-                            target="#dropdown-example-1"
-                            v-model="searchTerm"
-                            ></v-overflow-btn>
-                        </v-col>
-                    </v-row>
-                </v-container>
-
-            
+ <v-container class="cont">            
 
     <v-lazy
         v-model="isActive"
@@ -50,11 +17,16 @@
                          <v-card flat class="text-xs-center ma-3">
                              <v-row class="allContent">
                                  <v-col class="poster"><v-img :src="film.url_poster"></v-img></v-col>
-                                 <v-col class="title">
-                                     <v-subheader v-if="film.is_premiere"><v-icon>spa</v-icon>Премьера</v-subheader>
-                                     <v-list-item-title>{{film.title}}</v-list-item-title>
+                                 <v-col  align-self="center" class="title">
+                                     <v-row><v-subheader style="color: #FBCA12" v-if="film.is_premiere"><v-icon color="secondary">spa</v-icon>Премьера</v-subheader></v-row>
+                                     <h2>{{film.title}}</h2>
+                                     <v-row><v-subheader v-for="genre in genres" :key="genre.title">{{genre.title}}, </v-subheader></v-row>
                                  </v-col>
-                                 <v-col class="seances">seance</v-col>
+                                
+                                    <v-col  align-self="center" class="seances">
+                                     <v-row><v-chip v-for="seance in film.seances" :key="seance.id">{{seance.time}}</v-chip></v-row>
+                                    </v-col>
+                                
                              </v-row>
                          </v-card>
                        
@@ -116,11 +88,5 @@ export default {
 </script>
 
 <style>
-    ul li {
-        list-style-type: none;
-    }
-
-    .cont {
-        margin-top: 200px;
-    }
+   
 </style>
