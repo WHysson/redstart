@@ -2,17 +2,38 @@
 
  <v-container class="cont">
 
-      <v-container mt-12>
-            <v-row justify="center">
-                <v-col cols="8">
-                <v-text-field label="Поиск" v-model="searchTerm"></v-text-field>
-                </v-col>
-            </v-row>
+     
+                <v-container>
+                     
+                    <v-row justify="center">
+                       <v-col cols="1">
+                           
+                       </v-col>
+                        <v-col cols="3">
+                            <v-overflow-btn
+                            class="my-2"
+                            :items="ageRatings"
+                            menu-props="bottom"
+                            label="Возраст"
+                            target="#dropdown-example-1"
+                            v-model="searchTerm"
+                            ></v-overflow-btn>
+                        </v-col>
+                            <v-divider vertical></v-divider>
+                        <v-col cols="3">
+                            <v-overflow-btn
+                            class="my-2"
+                            :items="genres"
+                            menu-props="bottom"
+                            label="Жанр"
+                            target="#dropdown-example-1"
+                            v-model="searchTerm"
+                            ></v-overflow-btn>
+                        </v-col>
+                    </v-row>
+                </v-container>
 
-            <!-- <ul v-for="age in allFilters" :key="age.id">
-                <li >{{age}}</li>
-            </ul> -->
-        </v-container>
+            
 
     <v-lazy
         v-model="isActive"
@@ -24,47 +45,19 @@
       >
 
            <v-row justify="center">
-               <v-col cols="12">
-                    <ul>
-                        <li v-for="film in filteredFilms" :key="film.id">
-                            <v-card class="d-inline-block mx-auto my-12" min-width="100%">
-                                <v-row justify="space-between">
-                                    <v-col cols="4">
-                                        <v-img class="mx-12 my-12" height="400" min-width="250" :src="film.url_poster"></v-img>
-                                    </v-col>
-
-                                    <v-col
-                                    cols="8"
-                                    class="text-center"
-                                    >
-                                        <v-row
-                                            
-                                            justify="start"
-                                        >
-                                            <v-col cols="4">
-                                                <p v-if="film.is_premiere">Премьера</p>
-                                                <h3>{{film.title}}</h3>
-                                                <p>{{film.genres.title}}</p>
-                                            </v-col>
-
-                                           
-                                                <v-col cols="8">
-                                                <v-chip-group
-                                                column
-                                                active-class="primary--text"
-                                                >
-                                                    <v-chip v-for="seance in film.seances" :key="seance.id">
-                                                        {{seance.time}}
-                                                    </v-chip>
-                                                </v-chip-group>
-                                                </v-col>
-                                           
-                                        </v-row>
-                                    </v-col>
-                                </v-row>
-                            </v-card>  
-                        </li>
-                    </ul> 
+               <v-col cols="12" v-for="film in filteredFilms" :key="film.id">
+            
+                         <v-card flat class="text-xs-center ma-3">
+                             <v-row class="allContent">
+                                 <v-col class="poster"><v-img :src="film.url_poster"></v-img></v-col>
+                                 <v-col class="title">
+                                     <v-subheader v-if="film.is_premiere"><v-icon>spa</v-icon>Премьера</v-subheader>
+                                     <v-list-item-title>{{film.title}}</v-list-item-title>
+                                 </v-col>
+                                 <v-col class="seances">seance</v-col>
+                             </v-row>
+                         </v-card>
+                       
                </v-col>
            </v-row>
       </v-lazy>
@@ -77,9 +70,10 @@
 export default {
     data() {
         return {
+            date: new Date(),
             searchTerm: null,
-            isActive: false,
-            
+            genre: [],
+            isActive: false,            
         }
     },
     async mounted(){
@@ -96,16 +90,27 @@ export default {
        },  
        filteredFilms(){
            let films = this.allFilms
-             if(this.searchTerm)
-               films = films.filter(f => f.title.toLowerCase().indexOf(this.searchTerm.toLowerCase()) >= 0)
+           let reg = new RegExp (this.searchTerm, 'i')
+            if(this.searchTerm)
+               films = films.filter(f => reg.exec (f.age_rating))
+            
+            
+             
                return films 
-           
-        }
+       },
+        ageRatings(){
+            return this.$store.getters.ageRatings         
+        },
+        genres(){
+            return this.$store.getters.genres
+        },
+        
     },
     methods:{
         lights () {
         alert('Toggling lights...')
       },
+      
     }
 }
 </script>

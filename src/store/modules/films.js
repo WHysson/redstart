@@ -1,6 +1,8 @@
 export default {
     state: {
-        films: []
+        films: [],
+        age_ratings: [],
+        
     },
     mutations: {
         updateFilms(state, films) {
