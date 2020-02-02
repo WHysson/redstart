@@ -29,6 +29,9 @@ export default {
         },
         dates(state) {
             return state.filters["dates"]
+        },
+        time(state) {
+            return state.filters["seances"]
         }
     },
 }

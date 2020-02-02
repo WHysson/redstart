@@ -5,7 +5,6 @@
           label="Жанр"
           target="#dropdown-example"
           style="margin-top: 14px;"
-          segmented
     ></v-overflow-btn>
   </v-col>
 </template>

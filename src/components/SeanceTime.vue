@@ -1,13 +1,10 @@
 <template>
   <v-col cols="2">
       <v-overflow-btn
-      
           :items="dropdown_font"
           label="Время сеанса"
           target="#dropdown-example"
-          style="margin-top: 14px; border-style: hidden"
-          segmented        
-          
+          style="margin-top: 14px;"      
     ></v-overflow-btn>
   </v-col>
 </template>

@@ -12,18 +12,18 @@
     <v-card
       class="mx-auto d-none d-md-flex"
       max-width="1300"
-      min-height="50px"
+      min-height="10px"
       style="margin-top: -35px;"
     >
       <v-toolbar class="desktop_bar" flat>
        
-        <DateFilter/>
+        <DateFilter v-model="filterQuery.dateFilter"/>
         <v-divider vertical></v-divider>
-        <SeanceTime/>
+        <SeanceTime v-model="filterQuery.timeFilter"/>
         <v-divider vertical></v-divider>
-        <Genre/>
+        <Genre v-model="filterQuery.genreFilter"/>
         <v-divider vertical></v-divider>
-        <AgeRating/>
+        <AgeRating v-model="filterQuery.ageFilter"/>
         <ResetButton/>
       
       </v-toolbar>
@@ -31,8 +31,9 @@
   </v-card>
     
 
-        <v-container><FilmList/></v-container>
-   
+        
+          <FilmList :film_data="film" v-for="film in allFilms" :key="film.id"/>
+     
   </v-app>
 </template>
 
@@ -56,13 +57,47 @@ export default {
       AgeRating,
       ResetButton  
   },
-
- data(){
+  data(){
         return {
-            
-            
+            filterQuery: {
+              dateFilter: null,
+              timeFilter: null,
+              genreFilter: null,
+              ageFilter: null
+            },
+            films: [],
         }
     },
+  computed: {
+    allFilms () {
+      return this.$store.getters.allFilms 
+    }
+  },
+  methods: {
+    filteredFilms(){
+           let films = this.allFilms
+           let reg = new RegExp (this.filterQuery, 'i')
+            if(this.filterQuery.dateFilter){
+                 films = films.filter(f => reg.test(f.seances.date))
+                 return films 
+               }
+            if (this.filterQuery.timeFilter) {
+                 films = films.filter(f => reg.test(f.seances.time))
+                 return films 
+               }
+            if (this.filterQuery.genreFilter) {
+                 films = films.filter(f => reg.test(f.genres.title))
+                 return films 
+               }
+            if (this.filterQuery.ageFilter) {
+                 films = films.filter(f => reg.test(f.age_rating))
+                 return films 
+               }
+       },
+  },
+    async mounted() {
+      this.$store.dispatch("getFilms")
+    }
 };
 </script>
 

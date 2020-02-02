@@ -1,5 +1,5 @@
 <template>
-  <v-col cols="2"><v-btn class="grey lighten-5" text>Сбросить <v-icon>close</v-icon></v-btn></v-col>
+  <v-col cols="1"><v-btn color="secondary black--text" text>Сбросить <v-icon>close</v-icon></v-btn></v-col>
 </template>
 
 <script>

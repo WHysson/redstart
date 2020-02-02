@@ -1,8 +1,5 @@
 <template>
-
- <v-container class="cont">            
-
-    <v-lazy
+<v-lazy
         v-model="isActive"
         :options="{
           threshold: .5
@@ -10,66 +7,79 @@
         min-height="200"
         transition="fade-transition"
       >
-
+    <v-list>
+        <v-container class="cont">
            <v-row justify="center">
-               <v-col cols="12" v-for="film in filteredFilms" :key="film.id">
-            
-                         <v-card flat class="text-xs-center ma-3">
-                             <v-row class="allContent">
-                                 <v-col class="poster"><v-img :src="film.url_poster"></v-img></v-col>
-                                 <v-col  align-self="center" class="title">
-                                     <v-row><v-card-subtitle style="color: #FBCA12" v-if="film.is_premiere"><v-icon color="secondary">spa</v-icon>Премьера</v-card-subtitle></v-row>
-                                     <v-card-title>{{film.title}}</v-card-title>
-                                     <v-row><v-subheader v-for="genre in genres" :key="genre.title">{{genre.title}}, </v-subheader></v-row>
-                                 </v-col>
-
-                                    
-                                
-                                    
-                                     <v-row align-self="center" class="d-md-none seances">
-                                        <v-card flat>
-                                        <v-chip-group column>
-                                            <v-chip v-for="seance in film.seances" :key="seance.id">{{seance.time}}</v-chip>
-                                              
-                                        </v-chip-group>
-                                     </v-card>
-                                     </v-row>
-                                    
-
-                                    <v-col  align-self="center" class="d-none d-sm-flex seances">
-                                     <v-row>
-                                        <v-card flat>
-                                        <v-chip-group column>
-                                            <v-chip v-for="seance in film.seances" :key="seance.id">{{seance.time}}</v-chip>
-                                              
-                                        </v-chip-group>
-                                     </v-card>
-                                     </v-row>
-                                    </v-col>
-                                
-                             </v-row>
-                         </v-card>
-                       
+               <v-col cols="12">
+                <v-card flat class="text-xs-center ma-3">
+                    <v-row class="allContent">
+                        <v-col class="poster">
+                            <v-img :aspect-ratio="9/13" :src="film_data.url_poster">
+                            <v-row align="center" class="fill-height">
+                            <v-col align-self="center" cols="5"></v-col>
+                            <v-col align-self="center" cols="2">
+                                <v-btn color="secondary" fab><v-icon>play_arrow</v-icon></v-btn>
+                            </v-col>
+                            <v-col align-self="center" cols="5"></v-col>
+                            </v-row>
+                            </v-img>
+                        </v-col>
+                        <v-col  align-self="center" class="title">
+                            <v-row>
+                                <v-card-subtitle style="color: #FBCA12" v-if="film_data.is_premiere">
+                                    <v-icon color="secondary">spa</v-icon>Премьера
+                                </v-card-subtitle></v-row>
+                            <v-card-title>{{film_data.title}}</v-card-title>
+                            <v-row>
+                                <v-subheader v-for="genre in film_data.genres" :key="genre.title">{{genre.title}}, </v-subheader>
+                            </v-row>
+                        </v-col>
+                            <v-row align-self="center" class="d-md-none seances">
+                            <v-card flat>
+                            <v-chip-group column>
+                                <v-chip v-for="seance in film_data.seances" :key="seance.id">{{seance.time}}</v-chip>
+                            </v-chip-group>
+                            </v-card>
+                            </v-row>
+                        <v-col  align-self="center" class="d-none d-sm-flex seances">
+                            <v-row>
+                            <v-card flat>
+                            <v-chip-group column>
+                                <v-chip color="secondary black--text" v-for="seance in film_data.seances" :key="seance.id">{{seance.time}}</v-chip>
+                                <v-subheader>2D</v-subheader>
+                            </v-chip-group>
+                            </v-card>
+                            </v-row>
+                        </v-col>
+                    </v-row>
+                </v-card>
                </v-col>
            </v-row>
-      </v-lazy>
+           <hr>
+     
   </v-container>
+    </v-list>
+    </v-lazy>
 </template>
 
 
 <script>
-
 export default {
     data() {
         return {
-            date: new Date(now.getFullYear(), now.getMonth(), now.getDate()),
-            searchTerm: null,
-            genre: [],
-            isActive: false,            
+           isActive: true,            
+        }
+    },
+    props: {
+        film_data: {
+            type: Object,
+            default() {
+                return {}
+            }
         }
     },
     async mounted(){
-        this.$store.dispatch('fetchFilms')
+        this.$store.dispatch('getFilms')
         this.$store.dispatch('fetchFilters')
         
     },
@@ -80,29 +90,11 @@ export default {
        allFilters(){
            return this.$store.getters.allFilters
        },  
-       filteredFilms(){
-           let films = this.allFilms
-           let reg = new RegExp (this.searchTerm, 'i')
-            if(this.searchTerm)
-               films = films.filter(f => reg.exec (f.age_rating))
-            
-            
-             
-               return films 
-       },
-        ageRatings(){
-            return this.$store.getters.ageRatings         
-        },
-        genres(){
-            return this.$store.getters.genres
-        },
+       
         
     },
     methods:{
-        lights () {
-        alert('Toggling lights...')
-      },
-      
+
     }
 }
 </script>

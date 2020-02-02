@@ -1,8 +1,6 @@
 export default {
     state: {
-        films: [],
-        age_ratings: [],
-        
+        films: [],        
     },
     mutations: {
         updateFilms(state, films) {
@@ -10,14 +8,12 @@ export default {
         }
     },
     actions: {
-        async fetchFilms(ctx){
+        async getFilms({commit}){
             const res = await fetch('https://admin.lmndev.ml/api/public/films')
             let films = await res.json()
-            ctx.commit('updateFilms', films)
+            commit('updateFilms', films)
         },
         
-    },
-    modules: {
     },
     getters:{
         allFilms(state) {
