@@ -4,18 +4,18 @@
     <v-app-bar
       color="primary"
       extended
-      
+      class="d-none d-md-flex"
     >
       
     </v-app-bar>
 
     <v-card
-      class="mx-auto"
+      class="mx-auto d-none d-md-flex"
       max-width="1300"
       min-height="50px"
       style="margin-top: -35px;"
     >
-      <v-toolbar flat>
+      <v-toolbar class="desktop_bar" flat>
        
         <DateFilter/>
         <v-divider vertical></v-divider>
@@ -67,7 +67,5 @@ export default {
 </script>
 
 <style>
-  v-btn{
-    color: red;
-  }
+  
 </style>

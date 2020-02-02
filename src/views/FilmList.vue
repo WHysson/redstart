@@ -18,13 +18,33 @@
                              <v-row class="allContent">
                                  <v-col class="poster"><v-img :src="film.url_poster"></v-img></v-col>
                                  <v-col  align-self="center" class="title">
-                                     <v-row><v-subheader style="color: #FBCA12" v-if="film.is_premiere"><v-icon color="secondary">spa</v-icon>Премьера</v-subheader></v-row>
-                                     <h2>{{film.title}}</h2>
+                                     <v-row><v-card-subtitle style="color: #FBCA12" v-if="film.is_premiere"><v-icon color="secondary">spa</v-icon>Премьера</v-card-subtitle></v-row>
+                                     <v-card-title>{{film.title}}</v-card-title>
                                      <v-row><v-subheader v-for="genre in genres" :key="genre.title">{{genre.title}}, </v-subheader></v-row>
                                  </v-col>
+
+                                    
                                 
-                                    <v-col  align-self="center" class="seances">
-                                     <v-row><v-chip v-for="seance in film.seances" :key="seance.id">{{seance.time}}</v-chip></v-row>
+                                    
+                                     <v-row align-self="center" class="d-md-none seances">
+                                        <v-card flat>
+                                        <v-chip-group column>
+                                            <v-chip v-for="seance in film.seances" :key="seance.id">{{seance.time}}</v-chip>
+                                              
+                                        </v-chip-group>
+                                     </v-card>
+                                     </v-row>
+                                    
+
+                                    <v-col  align-self="center" class="d-none d-sm-flex seances">
+                                     <v-row>
+                                        <v-card flat>
+                                        <v-chip-group column>
+                                            <v-chip v-for="seance in film.seances" :key="seance.id">{{seance.time}}</v-chip>
+                                              
+                                        </v-chip-group>
+                                     </v-card>
+                                     </v-row>
                                     </v-col>
                                 
                              </v-row>
@@ -42,7 +62,7 @@
 export default {
     data() {
         return {
-            date: new Date(),
+            date: new Date(now.getFullYear(), now.getMonth(), now.getDate()),
             searchTerm: null,
             genre: [],
             isActive: false,            
