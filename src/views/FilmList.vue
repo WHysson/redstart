@@ -46,7 +46,7 @@
                             <v-card flat>
                             <v-chip-group column>
                                 <v-chip color="secondary black--text" v-for="seance in film_data.seances" :key="seance.id">{{seance.time}}</v-chip>
-                                <v-subheader>2D</v-subheader>
+                                
                             </v-chip-group>
                             </v-card>
                             </v-row>

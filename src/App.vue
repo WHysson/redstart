@@ -17,22 +17,42 @@
     >
       <v-toolbar class="desktop_bar" flat>
        
-        <DateFilter v-model="filterQuery.dateFilter"/>
+        <DateFilter  @select="filterQuery.dateFilter = $event; filteredFilms()"/>
         <v-divider vertical></v-divider>
-        <SeanceTime v-model="filterQuery.timeFilter"/>
+        <SeanceTime  @select="filterQuery.timeFilter = $event; filteredFilms()"/>
         <v-divider vertical></v-divider>
-        <Genre v-model="filterQuery.genreFilter"/>
+        <Genre  @select="filterQuery.genreFilter = $event; filteredFilms()"/>
         <v-divider vertical></v-divider>
-        <AgeRating v-model="filterQuery.ageFilter"/>
+        <AgeRating  @select="filterQuery.ageFilter = $event; filteredFilms()"/>
         <ResetButton/>
       
       </v-toolbar>
     </v-card>
-  </v-card>
+    
+      
+       <v-list class="d-md-none seances" >
+        <DateFilter  @select="filterQuery.dateFilter = $event; filteredFilms()"/>
+        <v-divider vertical></v-divider>
+        <SeanceTime  @select="filterQuery.timeFilter = $event; filteredFilms()"/>
+        <v-divider vertical></v-divider>
+        <Genre  @select="filterQuery.genreFilter = $event; filteredFilms()"/>
+        <v-divider vertical></v-divider>
+        <AgeRating  @select="filterQuery.ageFilter = $event; filteredFilms()"/>
+        <ResetButton/>
+       </v-list>
+       
+      
+     
+    </v-card>
+  
+
+  <v-list>
+
+  </v-list>
     
 
         
-          <FilmList :film_data="film" v-for="film in allFilms" :key="film.id"/>
+          <FilmList :film_data="film" v-for="film in films" :key="film.id"/>
      
   </v-app>
 </template>
@@ -66,6 +86,7 @@ export default {
               ageFilter: null
             },
             films: [],
+            allFilms: []
         }
     },
   computed: {
@@ -75,28 +96,34 @@ export default {
   },
   methods: {
     filteredFilms(){
-           let films = this.allFilms
+            this.films = this.allFilms
            let reg = new RegExp (this.filterQuery, 'i')
             if(this.filterQuery.dateFilter){
-                 films = films.filter(f => reg.test(f.seances.date))
-                 return films 
+               this.films = this.films.filter (film => {
+                   let arr = film.seances
+                   let find = []
+                   find = film.seances.filter (s => s.date == this.filterQuery.dateFilter)
+                   return find.length ? true : false
+                 })
                }
             if (this.filterQuery.timeFilter) {
-                 films = films.filter(f => reg.test(f.seances.time))
-                 return films 
+                 this.films = this.films.filter(f => reg.test(f.seances.time))
+            
                }
             if (this.filterQuery.genreFilter) {
-                 films = films.filter(f => reg.test(f.genres.title))
-                 return films 
+                 this.films = this.films.filter(f => reg.test(f.genres.title))
+              
                }
             if (this.filterQuery.ageFilter) {
-                 films = films.filter(f => reg.test(f.age_rating))
-                 return films 
+                 this.films = this.films.filter(f => f.age_rating === this.filterQuery.ageFilter)
+
                }
        },
   },
     async mounted() {
-      this.$store.dispatch("getFilms")
+     await this.$store.dispatch("getFilms")
+      this.allFilms = await this.$store.getters.allFilms 
+      this.films = this.allFilms
     }
 };
 </script>

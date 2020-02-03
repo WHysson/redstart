@@ -1,14 +1,17 @@
 <template>
- <v-col cols="2">
-      <v-overflow-btn
+
+ 
+   <v-col  cols="2" sm-12 xs-12>
+      <v-select
           v-model="ageFilter"
-          @input="lol"
+          @input="$emit('select', ageFilter)"
           :items="ageRatings"
           label="Возраст"
           target="#dropdown-example"
           style="margin-top: 14px;"
-    ></v-overflow-btn>
+    ></v-select>
   </v-col>
+  
 </template>
 
 <script>
@@ -30,13 +33,7 @@ export default {
         },
     },
     methods:  {
-      lol() {
-        console.log(this)
-        console.log(this.$root)
-        // this.$root.$children[0].filterQuery.rating = this.selected
-        
-        
-      }
+    
     
     }
   }
